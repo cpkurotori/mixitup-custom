@@ -32,6 +32,9 @@ Global Flags:
     <br>![getting executable path](executable_path.png)
     - `${REPLACE WITH PATH TO EXECUTABLE FOLDER}` with the full path to your folder you created (example: `C:\\Users\\johndoe\\Documents\\mixitup-custom` )
     <br>![getting folder path](folder_path.png)
+1. Save the `checkin_actrions.miucommand` and make sure the extension is `.miucommand` and is not saved as a Text Document. If it saves as a text document, you may need to edit the properties of the file.
+    - [Changing extension in Windows 10](https://www.partitionwizard.com/partitionmanager/change-file-extension-windows-10.html)
+    - [Changing extension in Windows 11](https://nerdschalk.com/how-to-change-a-file-type-on-windows-11-basic-and-advanced-ways-to-do-so/)
 1. Open MixItUp and navigate to `Action Groups`
 1. Click `New Action Group`
 1. At the bottom, click the right most icon (`Import Actions From File`)

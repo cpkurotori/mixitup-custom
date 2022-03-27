@@ -17,7 +17,7 @@
         {
             "$type": "MixItUp.Base.Model.Actions.ExternalProgramActionModel, MixItUp.Base",
             "FilePath": "${REPLACE WITH PATH TO EXECUTABLE}",
-            "Arguments": "user-count --counter-file ${REPLACE WITH PATH TO EXECUTABLE FOLDER}\\counter.db --user-name $username --user-id $userid --log-file ${REPLACE WITH PATH TO EXECUTABLE FOLDER}\\check-in.log",
+            "Arguments": "--log-file ${REPLACE WITH PATH TO EXECUTABLE FOLDER}\\check-in.log user-count --counter-file ${REPLACE WITH PATH TO EXECUTABLE FOLDER}\\counter.db --user-name $username --user-id $userid",
             "ShowWindow": false,
             "WaitForFinish": true,
             "SaveOutput": true,
