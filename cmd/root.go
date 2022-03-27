@@ -1,19 +1,13 @@
 package cmd
 
 import (
-	"fmt"
+	"flag"
 	"mixitup-custom/cmd/usercount"
 	"mixitup-custom/internal/logger"
 	"os"
 
-	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/spf13/cobra"
-)
-
-var (
-	logFile  string
-	logLevel string
 )
 
 var rootCmd = &cobra.Command{
@@ -22,35 +16,19 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(usercount.UserCountCmd)
+}
 
-	rootCmd.PersistentFlags().StringVar(&logFile, "log-file", "-", "log file, `-` for StdErr")
-	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "WARN", "log level [DEBUG|INFO|WARN|ERROR]")
+func AddFlagSet(set *flag.FlagSet) {
+	rootCmd.PersistentFlags().AddGoFlagSet(set)
 }
 
 func Execute() error {
-	rootCmd.ParseFlags(os.Args[1:])
-	if logFile != "" && logFile != "-" {
-		var err error
-		logWriter, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			return err
-		}
-		logger.Output = log.NewSyncWriter(logWriter)
-		switch logLevel {
-		case "ERROR":
-			logger.Level = level.AllowError()
-		case "WARN":
-			logger.Level = level.AllowWarn()
-		case "INFO":
-			logger.Level = level.AllowInfo()
-		case "DEBUG":
-			logger.Level = level.AllowDebug()
-		default:
-			return fmt.Errorf("Unrecognized log-level: %s", logLevel)
-		}
-		defer logWriter.Close()
-		rootCmd.SetErr(logger.Output)
-		rootCmd.SetOut(logger.Output)
+	if logger.Output != nil && logger.Output != os.Stderr {
+		rootCmd.SetErr(logger.GlobalLogger().Writer(logger.WithKey{Key: "log"}, logger.WithKV{"context", "root_err"}, logger.AlterLogger(level.Error)))
+		rootCmd.SetOut(logger.GlobalLogger().Writer(logger.WithKey{Key: "log"}, logger.WithKV{"context", "root_out"}, logger.AlterLogger(level.Info)))
+		usercount.UserCountCmd.SetErr(logger.GlobalLogger().Writer(logger.WithKey{Key: "log"}, logger.WithKV{"context", "user_count_err"}, logger.AlterLogger(level.Error)))
+		usercount.UserCountCmd.SetOut(logger.GlobalLogger().Writer(logger.WithKey{Key: "log"}, logger.WithKV{"context", "user_count_out"}, logger.AlterLogger(level.Info)))
 	}
+
 	return rootCmd.Execute()
 }

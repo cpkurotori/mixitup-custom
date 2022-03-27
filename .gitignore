@@ -1,3 +1,5 @@
 mixitup-custom
 *.exe
 *.db
+.vscode
+*.txt

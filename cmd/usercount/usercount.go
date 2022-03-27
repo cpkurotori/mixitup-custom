@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	lgr "mixitup-custom/internal/logger"
+	internallog "mixitup-custom/internal/logger"
 	"os"
 	"time"
 
@@ -51,7 +51,7 @@ type UserCounter struct {
 }
 
 type dbLogger struct {
-	log.Logger
+	*internallog.Logger
 }
 
 func (lgr *dbLogger) LogMode(lvl logger.LogLevel) logger.Interface {
@@ -67,7 +67,9 @@ func (lgr *dbLogger) LogMode(lvl logger.LogLevel) logger.Interface {
 		l = log.NewNopLogger()
 	}
 	return &dbLogger{
-		Logger: l,
+		Logger: &internallog.Logger{
+			Logger: l,
+		},
 	}
 }
 
@@ -93,7 +95,7 @@ var UserCountCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		defer func() {
 			if err != nil {
-				_ = level.Error(lgr.GlobalLogger()).Log("msg", "error while handling user count", "err", err)
+				_ = level.Error(internallog.GlobalLogger()).Log("msg", "error while handling user count", "err", err)
 			}
 		}()
 		if err := initializeDB(); err != nil {
@@ -101,7 +103,7 @@ var UserCountCmd = &cobra.Command{
 		}
 		db, err := gorm.Open(sqlite.Open(counterFile), &gorm.Config{
 			Logger: &dbLogger{
-				Logger: lgr.GlobalLogger(),
+				Logger: internallog.GlobalLogger(),
 			},
 		})
 		if err != nil {
@@ -130,7 +132,7 @@ var UserCountCmd = &cobra.Command{
 			return err
 		}
 
-		level.Info(lgr.GlobalLogger()).Log("msg", "user count complete", "count", user.Counter, "user_id", user.UserID, "username", username)
+		level.Info(internallog.GlobalLogger()).Log("msg", "user count complete", "count", user.Counter, "user_id", user.UserID, "username", username)
 		fmt.Fprintf(os.Stdout, "%d", user.Counter)
 		return nil
 	},
