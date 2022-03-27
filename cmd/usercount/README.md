@@ -27,7 +27,7 @@ Global Flags:
     1. **right click** the `Raw` button
     1. Click `Save as...`
     1. Name as `checkin_actions.miucommand` and save to the folder you created
-1. Open the file and replace the following:
+1. Open the file in a text editor such as Notepad and replace the following:
     - `${REPLACE WITH PATH TO EXECUTABLE}` with the full path to your executable (example: `C:\Users\johndoe\Documents\mixitup-custom\mixitup-custom-windows-x86.exe` )
     - `${REPLACE WITH PATH TO EXECUTABLE FOLDER}` with the full path to your folder you created (example: `C:\Users\johndoe\Documents\mixitup-custom` )
 1. Open MixItUp and navigate to `Action Groups`
