@@ -24,6 +24,9 @@ Global Flags:
 1. Create a folder where the executable and relevant data will be stored (example: `C:\Users\johndoe\Documents\mixitup-custom`)
 1. Move the downloaded executable to this folder
 1. Download the [checkin_actions.miucommand](/cmd/usercount/checkin_actions.miucommand)
+    1. **right click** the `Raw` button
+    1. Click `Save as...`
+    1. Name as `checkin_actions.miucommand` and save to the folder you created
 1. Open the file and replace the following:
     - `${REPLACE WITH PATH TO EXECUTABLE}` with the full path to your executable (example: `C:\Users\johndoe\Documents\mixitup-custom\mixitup-custom-windows-x86.exe` )
     - `${REPLACE WITH PATH TO EXECUTABLE FOLDER}` with the full path to your folder you created (example: `C:\Users\johndoe\Documents\mixitup-custom` )
