@@ -1,0 +1,96 @@
+{
+    "$type": "MixItUp.Base.Model.Commands.ActionGroupCommandModel, MixItUp.Base",
+    "RunOneRandomly": false,
+    "ID": "318c68dc-3a7c-4c73-9dbf-c451f000af89",
+    "Name": "Check In",
+    "Type": 4,
+    "IsEnabled": true,
+    "Unlocked": false,
+    "IsEmbedded": false,
+    "GroupName": null,
+    "Triggers": [],
+    "Requirements": {
+        "$type": "MixItUp.Base.Model.Requirements.RequirementsSetModel, MixItUp.Base",
+        "Requirements": []
+    },
+    "Actions": [
+        {
+            "$type": "MixItUp.Base.Model.Actions.ExternalProgramActionModel, MixItUp.Base",
+            "FilePath": "${REPLACE WITH PATH TO EXECUTABLE}",
+            "Arguments": "user-count --counter-file ${REPLACE WITH PATH TO EXECUTABLE FOLDER}\\counter.db --user-name $username --user-id $userid --log-file ${REPLACE WITH PATH TO EXECUTABLE FOLDER}\\check-in.log",
+            "ShowWindow": false,
+            "WaitForFinish": true,
+            "SaveOutput": true,
+            "ID": "00c5f972-b210-430d-b9bb-8a8b7b329da2",
+            "Name": "External Program",
+            "Type": 3,
+            "Enabled": true
+        },
+        {
+            "$type": "MixItUp.Base.Model.Actions.ConditionalActionModel, MixItUp.Base",
+            "CaseSensitive": false,
+            "Operator": 0,
+            "RepeatWhileTrue": false,
+            "Clauses": [
+                {
+                    "$type": "MixItUp.Base.Model.Actions.ConditionalClauseModel, MixItUp.Base",
+                    "ComparisionType": 11,
+                    "Value1": "$externalprogramresult",
+                    "Value2": "^[0-9]*$",
+                    "Value3": ""
+                }
+            ],
+            "CommandID": "00000000-0000-0000-0000-000000000000",
+            "Actions": [
+                {
+                    "$type": "MixItUp.Base.Model.Actions.ChatActionModel, MixItUp.Base",
+                    "ChatText": "$username has $externalprogramresult points",
+                    "SendAsStreamer": false,
+                    "IsWhisper": false,
+                    "WhisperUserName": null,
+                    "ID": "67cc56b1-e675-4419-84e8-117d813ca4c3",
+                    "Name": "Chat Message",
+                    "Type": 1,
+                    "Enabled": true
+                }
+            ],
+            "ID": "01972b47-a79e-4005-aa63-655b66480d7f",
+            "Name": "Conditional",
+            "Type": 17,
+            "Enabled": true
+        },
+        {
+            "$type": "MixItUp.Base.Model.Actions.ConditionalActionModel, MixItUp.Base",
+            "CaseSensitive": false,
+            "Operator": 0,
+            "RepeatWhileTrue": false,
+            "Clauses": [
+                {
+                    "$type": "MixItUp.Base.Model.Actions.ConditionalClauseModel, MixItUp.Base",
+                    "ComparisionType": 11,
+                    "Value1": "$externalprogramresult",
+                    "Value2": "^ERROR$",
+                    "Value3": ""
+                }
+            ],
+            "CommandID": "00000000-0000-0000-0000-000000000000",
+            "Actions": [
+                {
+                    "$type": "MixItUp.Base.Model.Actions.ChatActionModel, MixItUp.Base",
+                    "ChatText": "Something went wrong! Try again later!",
+                    "SendAsStreamer": false,
+                    "IsWhisper": false,
+                    "WhisperUserName": null,
+                    "ID": "ce1b318b-3e53-45ca-99bd-2b37db731702",
+                    "Name": "Chat Message",
+                    "Type": 1,
+                    "Enabled": true
+                }
+            ],
+            "ID": "e58a771e-01a7-45bd-b611-b6f9da36c974",
+            "Name": "Conditional",
+            "Type": 17,
+            "Enabled": true
+        }
+    ]
+}
